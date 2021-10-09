@@ -18,6 +18,7 @@
   "homepage": "https://github.com/lhr000lhr/toy-robot#readme",
   "devDependencies": {
     "javascript-state-machine": "^3.1.0",
-    "jest": "^27.2.5"
+    "jest": "^27.2.5",
+    "@reduxjs/toolkit": "^1.6.2"
   }
 }
