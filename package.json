@@ -1,0 +1,19 @@
+{
+  "name": "toy-robot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lhr000lhr/toy-robot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lhr000lhr/toy-robot/issues"
+  },
+  "homepage": "https://github.com/lhr000lhr/toy-robot#readme"
+}
