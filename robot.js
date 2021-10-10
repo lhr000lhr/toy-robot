@@ -1,21 +1,10 @@
-// const readline = require("readline").createInterface({
-//   input: process.stdin,
-//   output: process.stdout,
-// });
-
-// readline.question(`your name?`, (name) => {
-//   console.log(`your name is ${name}!`);
-//   readline.close();
-// });
-// import { createSlice, configureStore } from '@reduxjs/toolkit'
-
 // PLACE X,Y,F
 // MOVE
 // LEFT
 // RIGHT
 // REPORT
 
-const { createSlice, configureStore } = require("@reduxjs/toolkit");
+const { createSlice ,configureStore} = require("@reduxjs/toolkit");
 
 const robot = createSlice({
   name: "robot",
@@ -84,18 +73,36 @@ const robot = createSlice({
     },
     report: (state) => {
       const { direction, x, y } = state;
-      console.log(x, y, direction);
+      console.log(`${x},${y},${direction}`);
     },
   },
 });
 
 // const { place, left, right, move, report } = robot.actions;
 
-module.exports = robot;
+const logger = (store) => (next) => (action) => {
+  //   console.log("previous state", store.getState());
+  //   console.log("dispatching", action);
+  const state = store.getState();
+  if (state === null && action.type !== robot.actions.place.type) {
+    throw "must place robot first";
+  }
+
+  if (action.type !== robot.actions.report.type) {
+    const { direction, x, y } = state;
+    console.log(`${x},${y},${direction}`);
+  }
+  let result = next(action);
+  //   console.log("next state", store.getState());
+  return result;
+};
 
 const store = configureStore({
   reducer: robot.reducer,
+  middleware: [logger],
 });
+
+module.exports = { robot, store };
 
 // Can still subscribe to the store
 // store.subscribe(() => console.log(store.getState()));

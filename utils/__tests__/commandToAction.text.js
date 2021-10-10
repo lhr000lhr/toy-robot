@@ -28,5 +28,5 @@ test("convert command to action", () => {
 
   expect(() => {
     commandToAction("RE1PORT");
-  }).toThrowError("Command not found!");
+  }).toThrowError("Command 'RE1PORT' not found!");
 });

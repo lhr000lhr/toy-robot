@@ -1,4 +1,6 @@
-const { reducer, actions } = require("../index");
+const {
+  robot: { actions },
+} = require("../robot");
 const inputToState = require("./inputToState");
 
 const { place, left, right, move, report } = actions;
@@ -30,8 +32,7 @@ const commandToAction = (input) => {
       break;
 
     default:
-      throw "Command not found!";
-      break;
+      throw `Command '${input}' not found!`;
   }
 
   return action;

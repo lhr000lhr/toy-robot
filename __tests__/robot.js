@@ -1,5 +1,6 @@
-const { reducer, actions } = require("../robot");
+const { robot } = require("../robot");
 
+const { reducer, actions } = robot;
 const { place, left, right, move, report } = actions;
 
 describe("Robot action tests", () => {
