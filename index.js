@@ -14,7 +14,7 @@ const recursiveAsyncReadLine = () => {
       //we need some base case, for recursion
       return rl.close(); //closing RL and returning from function.
     }
-    // log('Got it! Your answer was: "', answer, '"');
+
     try {
       store.dispatch(commandToAction(answer));
     } catch (error) {
