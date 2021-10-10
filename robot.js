@@ -3,8 +3,8 @@
 // LEFT
 // RIGHT
 // REPORT
-
-const { createSlice ,configureStore} = require("@reduxjs/toolkit");
+const chalk = require("chalk");
+const { createSlice, configureStore } = require("@reduxjs/toolkit");
 
 const robot = createSlice({
   name: "robot",
@@ -71,29 +71,21 @@ const robot = createSlice({
           break;
       }
     },
-    report: (state) => {
-      const { direction, x, y } = state;
-      console.log(`${x},${y},${direction}`);
-    },
+    report: (state) => {},
   },
 });
 
-// const { place, left, right, move, report } = robot.actions;
-
 const logger = (store) => (next) => (action) => {
-  //   console.log("previous state", store.getState());
-  //   console.log("dispatching", action);
   const state = store.getState();
   if (state === null && action.type !== robot.actions.place.type) {
-    throw "must place robot first";
+    throw "must " + chalk.red("PLACE") + " robot first";
   }
 
-  if (action.type !== robot.actions.report.type) {
+  if (action.type === robot.actions.report.type) {
     const { direction, x, y } = state;
     console.log(`${x},${y},${direction}`);
   }
   let result = next(action);
-  //   console.log("next state", store.getState());
   return result;
 };
 
@@ -103,29 +95,3 @@ const store = configureStore({
 });
 
 module.exports = { robot, store };
-
-// Can still subscribe to the store
-// store.subscribe(() => console.log(store.getState()));
-
-// Still pass action objects to `dispatch`, but they're created for us
-// store.dispatch(
-//   place({
-//     direction: "SOUTH",
-//     x: 0,
-//     y: 0,
-//   })
-// );
-// store.dispatch(move());
-// store.dispatch(report());
-
-// store.dispatch(left());
-// store.dispatch(report());
-
-// store.dispatch(move());
-// store.dispatch(report());
-
-// store.dispatch(left());
-// store.dispatch(report());
-
-// store.dispatch(move());
-// store.dispatch(report());

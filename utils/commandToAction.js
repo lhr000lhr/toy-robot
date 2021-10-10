@@ -1,3 +1,5 @@
+const chalk = require("chalk");
+
 const {
   robot: { actions },
 } = require("../robot");
@@ -32,7 +34,7 @@ const commandToAction = (input) => {
       break;
 
     default:
-      throw `Command '${input}' not found!`;
+      throw `Command '${chalk.red(input)}' not found!`;
   }
 
   return action;

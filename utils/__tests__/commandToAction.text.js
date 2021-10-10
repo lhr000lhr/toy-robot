@@ -1,3 +1,5 @@
+const chalk = require("chalk");
+
 const commandToAction = require("../commandToAction");
 
 test("convert command to action", () => {
@@ -28,5 +30,5 @@ test("convert command to action", () => {
 
   expect(() => {
     commandToAction("RE1PORT");
-  }).toThrowError("Command 'RE1PORT' not found!");
+  }).toThrowError(`Command '${chalk.red("RE1PORT")}' not found!`);
 });
