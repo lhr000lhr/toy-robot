@@ -89,7 +89,7 @@ const robot = createSlice({
   },
 });
 
-const { place, left, right, move, report } = robot.actions;
+// const { place, left, right, move, report } = robot.actions;
 
 module.exports = robot;
 

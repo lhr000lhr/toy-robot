@@ -1,4 +1,4 @@
-const { reducer, actions } = require("../index");
+const { reducer, actions } = require("../robot");
 
 const { place, left, right, move, report } = actions;
 
