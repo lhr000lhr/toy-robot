@@ -6,7 +6,6 @@
 const chalk = require("chalk");
 const { createSlice, configureStore } = require("@reduxjs/toolkit");
 const _ = require("lodash");
-const obs = require("./obs");
 const reducers = require("./reducers");
 
 const calculator = require("./utils/calculator");
@@ -40,7 +39,7 @@ const obstacleCheck = (store) => (next) => (action) => {
     const { payload } = action;
     const { x, y } = state;
     if (_.isEqual({ x, y }, { x: payload.x, y: payload.y })) {
-      throw "should not " + chalk.red("PLACE") + " on the robot";
+      throw "should not " + chalk.red("PLACE obstacle") + " on the robot";
     }
   }
 
@@ -79,4 +78,4 @@ const store = configureStore({
 });
 
 store.subscribe(() => console.log("State after dispatch: ", store.getState()));
-module.exports = { robot, store, obs };
+module.exports = { robot, store };
