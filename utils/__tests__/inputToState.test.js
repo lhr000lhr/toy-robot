@@ -1,6 +1,6 @@
 const chalk = require("chalk");
 
-const inputToState = require("../inputToState");
+const { inputToState } = require("../inputToState");
 
 describe("convert Input to initial state", () => {
   test("should convert correctly", () => {
@@ -26,7 +26,7 @@ describe("convert Input to initial state", () => {
       "0,0,0",
       null,
       undefined,
-      "----"
+      "----",
     ];
     parameters.forEach((parameter) => {
       expect(() => {
