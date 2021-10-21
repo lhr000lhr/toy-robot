@@ -1,82 +1,81 @@
 const _ = require("lodash");
 
-const parents = {};
-
 const calculator = (state, destination) => {
   const { x, y, obs } = state;
 
   const { x: desX, y: desY } = destination;
 
-  let start = [x, y];
-  let end = [desX, desY];
+  const start = [x, y];
+  const end = [desX, desY];
 
-  const path = findPath(start, end, obs);
-  printPath(path);
+  const parents = findPath(start, end, obs);
+  printPath(parents, { x: desX, y: desY });
 };
 
-const safeNeighbor = function (obs, r, c) {
-  if (r < 0 || r >= 4) return false;
-  if (c < 0 || c >= 4) return false;
-  if (_.find(obs, { r, c })) {
+const safeNeighbor = (obs, x, y) => {
+  if (x < 0 || x >= 5) return false;
+  if (y < 0 || y >= 5) return false;
+  if (_.find(obs, { x, y })) {
     return false;
   }
 
   return true;
 };
 
-const exploreLocation = function (obs, location) {
-  let r = location.r;
-  let c = location.c;
+const exploreLocation = (obs, location) => {
+  let x = location.x;
+  let y = location.y;
   let allNeighbors = [];
   //left
-  if (safeNeighbor(obs, r, c - 1)) allNeighbors.push({ r: r, c: c - 1 });
+  if (safeNeighbor(obs, x, y - 1)) allNeighbors.push({ x, y: y - 1 });
   //right
-  if (safeNeighbor(obs, r, c + 1)) allNeighbors.push({ r: r, c: c + 1 });
+  if (safeNeighbor(obs, x, y + 1)) allNeighbors.push({ x, y: y + 1 });
   //top
-  if (safeNeighbor(obs, r - 1, c)) allNeighbors.push({ r: r - 1, c: c });
+  if (safeNeighbor(obs, x - 1, y)) allNeighbors.push({ x: x - 1, y });
   //bottom
-  if (safeNeighbor(obs, r + 1, c)) allNeighbors.push({ r: r + 1, c: c });
+  if (safeNeighbor(obs, x + 1, y)) allNeighbors.push({ x: x + 1, y });
   return allNeighbors;
 };
 
-const findPath = function (start, end, obs) {
-  var location = {
-    r: start[0],
-    c: start[1],
+const findPath = (start, end, obs) => {
+  const location = {
+    x: start[0],
+    y: start[1],
   };
-  var queue = [];
+
+  const parents = {};
+
+  const queue = [];
   queue.push(location);
 
   const visited = [];
   while (queue.length) {
-    var currentLocation = queue.shift();
-    const { r, c } = currentLocation;
-    if (currentLocation.r == end[0] && currentLocation.c == end[1])
-      return currentLocation;
+    const currentLocation = queue.shift();
+    if (currentLocation.x == end[0] && currentLocation.y == end[1])
+      return parents;
 
-    visited.push({ r: currentLocation.r, c: currentLocation.c });
+    visited.push({ x: currentLocation.x, y: currentLocation.y });
 
-    // grid[currentLocation.r][currentLocation.c].state = "visited";
-    var neighbors = exploreLocation(obs, currentLocation);
+    const neighbors = exploreLocation(obs, currentLocation);
     for (neighbor of neighbors) {
-      if (_.find(visited, { r, c })) {
+      if (!_.find(visited, { x: neighbor.x, y: neighbor.y })) {
         queue.push(neighbor);
-        parents[`${r}${c}`] = currentLocation;
+        parents[`${neighbor.x}${neighbor.y}`] = currentLocation;
       }
     }
   }
-  return false;
+
+  throw "cannot reach the destination";
 };
 
-const printPath = function (path) {
-  let paths = [path];
+const printPath = (parents, path) => {
+  const paths = [path];
   while (true) {
-    let r = path.r;
-    let c = path.c;
-    let parent = parents[`${r}${c}`];
-    if (parent == undefined) break;
+    const { x, y } = path;
+    const parent = parents[`${x}${y}`];
+    if (parent === undefined) break;
     paths.push(parent);
-    path = { r: parent.r, c: parent.c };
+    path = { x: parent.x, y: parent.y };
   }
   console.log(paths);
 };

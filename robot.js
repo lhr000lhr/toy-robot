@@ -61,13 +61,14 @@ const reportLocation = (store) => (next) => (action) => {
 };
 
 const findPath = (store) => (next) => (action) => {
-  let result = next(action);
+  const state = store.getState();
 
   if (action.type === robot.actions.destination.type) {
     const { payload } = action;
     const { x, y } = payload;
     calculator(state, { x, y });
   }
+  const result = next(action);
 
   return result;
 };
