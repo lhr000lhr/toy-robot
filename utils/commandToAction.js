@@ -3,9 +3,13 @@ const chalk = require("chalk");
 const {
   robot: { actions },
 } = require("../robot");
-const inputToState = require("./inputToState");
+const {
+  inputToState,
+  inputToObsState,
+  inputDestinationToState,
+} = require("./inputToState");
 
-const { place, left, right, move, report } = actions;
+const { place, left, right, move, report, placeObs, destination } = actions;
 
 const commandToAction = (input) => {
   const [commandName, param] = input.split(" ");
@@ -19,6 +23,14 @@ const commandToAction = (input) => {
     case "PLACE":
       const initialState = inputToState(param);
       action = place(initialState);
+      break;
+    case "PLACEOBS":
+      const obs = inputToObsState(param);
+      action = placeObs(obs);
+      break;
+    case "DESTINATION":
+      const des = inputDestinationToState(param);
+      action = destination(des);
       break;
     case "MOVE":
       action = move();

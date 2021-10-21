@@ -1,6 +1,6 @@
-const place = (_, { payload }) => {
+const place = (state, { payload }) => {
   const { direction, x, y } = payload;
-  return { direction, x, y };
+  return { ...state, direction, x, y };
 };
 
-module.exports = place
+module.exports = place;

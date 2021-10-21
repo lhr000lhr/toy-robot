@@ -1,21 +1,31 @@
+const _ = require("lodash");
+// const obs = require("../obs");
+
 const move = (state) => {
-  const { direction, x, y } = state;
+  const { direction, x, y, obs } = state;
+
+  const newState = { ...state };
   switch (direction) {
     case "NORTH":
-      state.y = Math.min(y + 1, 4);
+      newState.y = Math.min(y + 1, 4);
       break;
     case "SOUTH":
-      state.y = Math.max(y - 1, 0);
+      newState.y = Math.max(y - 1, 0);
       break;
     case "WEST":
-      state.x = Math.max(x - 1, 0);
+      newState.x = Math.max(x - 1, 0);
       break;
     case "EAST":
-      state.x = Math.min(x + 1, 4);
+      newState.x = Math.min(x + 1, 4);
       break;
     default:
       break;
   }
+
+  if (_.find(obs, { x: newState.x, y: newState.y })) {
+    return { ...state };
+  }
+  return newState;
 };
 
 module.exports = move;
