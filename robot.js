@@ -19,7 +19,7 @@ const robot = createSlice({
   reducers,
 });
 
-const logger = (store) => (next) => (action) => {
+const placeRobotCheck = (store) => (next) => (action) => {
   const state = store.getState();
   if (
     state.x === undefined &&
@@ -29,36 +29,53 @@ const logger = (store) => (next) => (action) => {
     throw "must " + chalk.red("PLACE") + " robot first";
   }
 
-  if (action.type === robot.actions.report.type) {
-    const { direction, x, y } = state;
-    console.log(`${x},${y},${direction}`);
-  }
+  const result = next(action);
 
+  return result;
+};
+
+const obstacleCheck = (store) => (next) => (action) => {
+  const state = store.getState();
   if (action.type === robot.actions.placeObs.type) {
     const { payload } = action;
     const { x, y } = state;
-    console.log({ x, y });
     if (_.isEqual({ x, y }, { x: payload.x, y: payload.y })) {
       throw "should not " + chalk.red("PLACE") + " on the robot";
     }
   }
 
+  const result = next(action);
+
+  return result;
+};
+
+const reportLocation = (store) => (next) => (action) => {
+  const state = store.getState();
+  if (action.type === robot.actions.report.type) {
+    const { direction, x, y } = state;
+    console.log(`${x},${y},${direction}`);
+  }
+  const result = next(action);
+
+  return result;
+};
+
+const findPath = (store) => (next) => (action) => {
+  let result = next(action);
+
   if (action.type === robot.actions.destination.type) {
     const { payload } = action;
     const { x, y } = payload;
-
     calculator(state, { x, y });
   }
 
-  let result = next(action);
-
-  console.log({ state });
   return result;
 };
 
 const store = configureStore({
   reducer: robot.reducer,
-  middleware: [logger],
+  middleware: [placeRobotCheck, reportLocation, obstacleCheck, findPath],
 });
 
+store.subscribe(() => console.log("State after dispatch: ", store.getState()));
 module.exports = { robot, store, obs };
