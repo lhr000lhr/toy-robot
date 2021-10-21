@@ -1,4 +1,5 @@
 const _ = require("lodash");
+const chalk = require("chalk");
 
 const calculator = (state, destination) => {
   const { x, y, obs } = state;
@@ -65,7 +66,7 @@ const findPath = (start, end, obs) => {
     }
   }
 
-  throw "cannot reach the destination";
+  throw "cannot reach the destination " + chalk.red(`x:${end[0]}, y:${end[1]}`);
 };
 
 const printPath = (parents, path) => {

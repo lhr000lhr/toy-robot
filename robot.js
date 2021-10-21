@@ -77,5 +77,5 @@ const store = configureStore({
   middleware: [placeRobotCheck, reportLocation, obstacleCheck, findPath],
 });
 
-store.subscribe(() => console.log("State after dispatch: ", store.getState()));
+// store.subscribe(() => console.log("State after dispatch: ", store.getState()));
 module.exports = { robot, store };
